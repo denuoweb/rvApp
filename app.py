@@ -5,7 +5,7 @@ import math
 import requests
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder='template')
 
 # Configuration
 app.config['GOOGLE_MAPS_API_KEY'] = ''  # Ideally set in environment or config file
@@ -184,4 +184,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
