@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nomadic Worker Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="loadingMessage">
+        <img src="{{ url_for('static', filename='images/loading.gif') }}" alt="Loading...">
+    </div>
+    <header>
+        <h1>Nomadic Worker Platform</h1>
+        <nav>
+            <ul>
+                <li><a href="#route-planning">Route Planning</a></li>
+                <li><a href="#remote-jobs">Remote Jobs</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#health-safety">Health & Safety</a></li>
+                <li><a href="#marketplace">Marketplace</a></li>
+                <li><a href="#educational-resources">Educational Resources</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <!-- Existing Route Planner -->
+        <section id="route-planning">
+            <h2>Route Planner</h2>
+            <form method="POST">
+                <label for="start">Start:</label>
+                <input type="text" id="start" name="start" required><br>
+                <label for="end">End:</label>
+                <input type="text" id="end" name="end" required><br>
+                <label for="mode">Mode of Travel:</label>
+                <select id="mode" name="mode">
+                    <option value="driving">Driving</option>
+                    <option value="walking">Walking</option>
+                    <option value="bicycling">Bicycling</option>
+                    <option value="transit">Transit</option>
+                </select><br>
+                <label for="interval">Interval (in miles):</label>
+                <input type="text" id="interval" name="interval" placeholder="Enter interval in miles" required><br>
+                <label for="waypoints">Waypoints (separated by ";"):</label><br>
+                <textarea id="waypoints" name="waypoints" rows="3" placeholder="Enter up to 23 waypoints, separated by ';'"></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <!-- Placeholder sections for new features -->
+        <section id="remote-jobs">
+            <h2>Remote Job Board</h2>
+            <p>Discover remote work opportunities tailored to nomadic lifestyles.</p>
+            <!-- Job listings will be dynamically loaded here -->
+        </section>
+
+        <section id="community">
+            <h2>Community Engagement</h2>
+            <p>Connect with fellow nomads, share experiences, and organize meet-ups.</p>
+            <!-- Community features like forums and event calendars -->
+        </section>
+
+        <section id="health-safety">
+            <h2>Health and Safety</h2>
+            <p>Access essential health services and stay updated on safety advisories.</p>
+            <!-- Emergency services locator and safety tips -->
+        </section>
+
+        <section id="marketplace">
+            <h2>Marketplace</h2>
+            <p>Buy and sell RV equipment, gear, and local goods.</p>
+            <!-- Marketplace listings -->
+        </section>
+
+        <section id="educational-resources">
+            <h2>Educational Resources</h2>
+            <p>Learn about RV maintenance, remote working, and more.</p>
+            <!-- Tutorials, guides, and language learning tools -->
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Nomadic Worker Platform. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+
