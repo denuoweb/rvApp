@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Route Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="route-details">
+        <h2>Route Details</h2>
+        <p>Distance: {{ distance }}</p>
+        <p>Duration: {{ duration }}</p>
+        <p>Interval: {{ interval }} miles</p>
+        <p>Planned Stops: {{ cities_hotels_info|length }}</p>
+    </div>
+    
+    {% for info in cities_hotels_info %}
+        <div class="location-block">
+            <h3>Location: {{ info.city }}</h3>
+            <p>{{ info.weather }}</p>  <!-- Display weather information -->
+            {% if info.hotels %}
+                <h4>Nearby Hotels:</h4>
+                <ul>
+                    {% for hotel in info.hotels %}
+                        <li>{{ hotel }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hotels found.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+
+    <a href="/">New Search</a>
+</body>
+</html>
