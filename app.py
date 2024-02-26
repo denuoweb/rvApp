@@ -8,7 +8,7 @@ import requests
 app = Flask(__name__)
 
 # Configuration
-app.config['GOOGLE_MAPS_API_KEY'] = 'AIzaSyBlr8a7hsU23SSAm-lIfi4IRCkdFpOUWQg'  # Ideally set in environment or config file
+app.config['GOOGLE_MAPS_API_KEY'] = ''  # Ideally set in environment or config file
 
 # Google Maps Client Initialization
 def get_gmaps_client():
