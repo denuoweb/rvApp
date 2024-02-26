@@ -1,14 +1,17 @@
-from flask import Flask, render_template, request, current_app
+from flask import Flask, render_template, request, current_app, flash, redirect, url_for
 import googlemaps
+from googlemaps.exceptions import ApiError
 from datetime import datetime
 import math
 import requests
+import os
 
 # Initialize Flask app
 app = Flask(__name__, template_folder='template')
 
 # Configuration
 app.config['GOOGLE_MAPS_API_KEY'] = ''  # Ideally set in environment or config file
+app.config['SECRET_KEY'] = os.urandom(24)  # Needed for session management and flash messages
 
 # Google Maps Client Initialization
 def get_gmaps_client():
@@ -153,33 +156,41 @@ def fetch_nearby_hotels(location):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        start_address = request.form['start']
-        end_address = request.form['end']
-        mode = request.form.get('mode', 'driving')
-        interval = miles_to_km(float(request.form['interval']))
+        try:
         
-        # Process waypoints
-        waypoints_text = request.form.get('waypoints', '')
-        waypoints = [wp.strip() for wp in waypoints_text.split(';') if wp.strip()]  # Split and strip waypoints
+            start_address = request.form['start']
+            end_address = request.form['end']
+            mode = request.form.get('mode', 'driving')
+            interval = miles_to_km(float(request.form['interval']))
+            
+            # Process waypoints
+            waypoints_text = request.form.get('waypoints', '')
+            waypoints = [wp.strip() for wp in waypoints_text.split(';') if wp.strip()]  # Split and strip waypoints
 
-        gmaps = get_gmaps_client()
-        directions_result = gmaps.directions(start_address, 
-                                              end_address, 
-                                              mode=mode, 
-                                              waypoints=waypoints if waypoints else None, 
-                                              optimize_waypoints=True, 
-                                              departure_time=datetime.now())
+            gmaps = get_gmaps_client()
+            directions_result = gmaps.directions(start_address, 
+                                                end_address, 
+                                                mode=mode, 
+                                                waypoints=waypoints if waypoints else None, 
+                                                optimize_waypoints=True, 
+                                                departure_time=datetime.now())
 
-        if directions_result:
-            polyline = directions_result[0]['overview_polyline']['points']
-            points = decode_polyline(polyline)
-            cities_hotels_info = find_cities_and_hotels(points, interval)
+            if directions_result:
+                polyline = directions_result[0]['overview_polyline']['points']
+                points = decode_polyline(polyline)
+                cities_hotels_info = find_cities_and_hotels(points, interval)
 
-            distance = directions_result[0]['legs'][0]['distance']['text']
-            duration = directions_result[0]['legs'][0]['duration']['text']
+                distance = directions_result[0]['legs'][0]['distance']['text']
+                duration = directions_result[0]['legs'][0]['duration']['text']
 
-            return render_template('results.html', distance=distance, duration=duration, cities_hotels_info=cities_hotels_info, interval=interval / 1.60934)
+                return render_template('results.html', distance=distance, duration=duration, cities_hotels_info=cities_hotels_info, interval=interval / 1.60934)
 
+        except ApiError as e:
+            # Log the error and inform the user with a flash message
+            print(f"Google Maps API error: {e.status}")
+            flash('Location not found. Please check your addresses and try again.', 'error')
+            return redirect(url_for('index'))
+        
     return render_template('index.html')
 
 
