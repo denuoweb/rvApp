@@ -21,8 +21,8 @@
             {% if info.hotels %}
                 <h4>Nearby Hotels:</h4>
                 <ul>
-                    {% for hotel in info.hotels %}
-                        <li>{{ hotel }}</li>
+                    {% for hotel in city.hotels %}
+                        <li><a href="{{ hotel.link }}" target="_blank">{{ hotel.name }}</a></li>
                     {% endfor %}
                 </ul>
             {% else %}

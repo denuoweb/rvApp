@@ -147,11 +147,16 @@ def fetch_nearby_hotels(location):
     gmaps = get_gmaps_client()
     try:
         places_result = gmaps.places_nearby(location=location, radius=10000, type='lodging')
-        hotels = [place['name'] for place in places_result.get('results', [])[:5]]  # Limit to top 5 hotels
+        # Now includes place ID to construct a link
+        hotels = [{
+            'name': place['name'],
+            'link': f"https://www.google.com/maps/place/?q=place_id:{place['place_id']}"
+        } for place in places_result.get('results', [])[:5]]  # Limit to top 5 hotels
         return hotels
     except Exception as e:
         current_app.logger.error(f"Error fetching nearby hotels: {e}")
-        return ["Hotel fetching error"]
+        return [{"name": "Hotel fetching error", "link": "#"}]
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
