@@ -146,7 +146,7 @@ def reverse_geocode_location(location):
 def fetch_nearby_hotels(location):
     gmaps = get_gmaps_client()
     try:
-        places_result = gmaps.places_nearby(location=location, radius=10000, type='lodging')
+        places_result = gmaps.places_nearby(location=location, radius=10000, type='rv_park')
         # Now includes place ID to construct a link
         hotels = [{
             'name': place['name'],
@@ -162,7 +162,8 @@ def fetch_nearby_hotels(location):
 def index():
     if request.method == 'POST':
         try:
-        
+            route_preference = request.form.get('route_preference', 'fastest')  # Default to 'fastest'
+
             start_address = request.form['start']
             end_address = request.form['end']
             mode = request.form.get('mode', 'driving')

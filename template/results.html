@@ -17,11 +17,11 @@
     {% for info in cities_hotels_info %}
         <div class="location-block">
             <h3>Location: {{ info.city }}</h3>
-            <p>{{ info.weather }}</p>  <!-- Display weather information -->
+            <p>{{ info.weather }}</p>  <!-- Correctly displays weather information -->
             {% if info.hotels %}
                 <h4>Nearby Hotels:</h4>
                 <ul>
-                    {% for hotel in city.hotels %}
+                    {% for hotel in info.hotels %}  <!-- Corrected to iterate over info.hotels -->
                         <li><a href="{{ hotel.link }}" target="_blank">{{ hotel.name }}</a></li>
                     {% endfor %}
                 </ul>
